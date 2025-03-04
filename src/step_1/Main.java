@@ -63,8 +63,15 @@ public class Main {
                     System.out.print(coords[0] + COLS[i] + " ");
                 }
             } else {
-                for (int i = index; i >= lenght - index - 1; i--) {
-                    System.out.print(coords[0] + COLS[i] + " ");
+                // TODO: Wrong
+                if (Arrays.asList(ROWS).indexOf(coords[3]) == 0) {
+                    for (int i = index; i >= lenght - index - 1; i--) {
+                        System.out.print(coords[0] + COLS[i] + " ");
+                    }
+                } else {
+                    for (int i = index; i >= lenght - index + 1; i--) {
+                        System.out.print(coords[0] + COLS[i] + " ");
+                    }
                 }
             }
         } else {
@@ -77,8 +84,15 @@ public class Main {
                     System.out.print(ROWS[i] + coords[1] + " ");
                 }
             } else {
-                for (int i = index; i >= lenght - index - 1; i--) {
-                    System.out.print(ROWS[i] + coords[1] + " ");
+                // TODO: Wrong
+                if (Arrays.asList(ROWS).indexOf(coords[2]) == 0) {
+                    for (int i = index; i >= lenght - index - 1; i--) {
+                        System.out.print(ROWS[i] + coords[1] + " ");
+                    }
+                } else {
+                    for (int i = index; i >= lenght - index + 1; i--) {
+                        System.out.print(ROWS[i] + coords[1] + " ");
+                    }
                 }
             }
         }
