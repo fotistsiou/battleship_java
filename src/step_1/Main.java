@@ -26,11 +26,90 @@ package step_1;
  * 2. To place a ship, enter two coordinates, the beginning and the end of the ship. The order of the coordinates (start
  *    to end or end to start) does not really matter.
  * 3. In later stages we will need to know the length of the ship and the positions on the field on which it's parts are
- *    placed. Therefore output this information to a player. Here is an example of possible formatting: Length: 3 and
+ *    placed. Therefore, output this information to a player. Here is an example of possible formatting: Length: 3 and
  *    Parts: F2 F3 F4
  * 4. If an error occurs in the input coordinates (coordinates are not on the same line or out of bounds), your program
  *    should report it. The message should contain the word Error.
  */
 
+import java.util.Arrays;
+import java.util.Scanner;
+
 public class Main {
+    public static Scanner scanner = new Scanner(System.in);
+    public static final int SIZE = 10;
+    public static final String[] ROWS = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
+    public static final String[] COLS = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+    public static String[][] board = new String[SIZE][SIZE];
+
+    public static void main(String[] args) {
+        Main.fillBoard();
+        Main.printBoard();
+
+        String[] coords = Main.getCoordinates();
+
+        if (coords == null) {
+            return;
+        }
+
+        int lenght = 1;
+        if (!coords[0].equals(coords[2])) {
+            lenght += Math.abs(coords[0].charAt(0) - coords[2].charAt(0));
+            System.out.println("Length: " + lenght);
+            System.out.print("Parts: ");
+            for (int i = 0; i < lenght; i++) {
+                System.out.print(ROWS[i] + coords[1] + " ");
+            }
+        } else {
+            lenght += Math.abs(Integer.parseInt(coords[1]) - Integer.parseInt(coords[3]));
+            System.out.println("Length: " + lenght);
+            System.out.print("Parts: ");
+            for (int i = 0; i < lenght; i++) {
+                System.out.print(coords[0] + COLS[i] + " ");
+            }
+        }
+    }
+
+    public static String[] getCoordinates() {
+        System.out.println("Enter the coordinates of the ship:");
+        String[] coordinates = Arrays
+                .stream(Main.scanner.nextLine().split(" "))
+                .filter(s -> s.matches("^[A-J](10|[1-9])$"))
+                .toArray(String[]::new);
+
+        if (coordinates.length != 2) {
+            System.out.println("Error! Coordinates out of bounds!");
+            return null;
+        }
+
+        char startRow = coordinates[0].charAt(0);
+        String startCol = coordinates[1].substring(1);
+        char endRow = coordinates[1].charAt(0);
+        String endCol = coordinates[1].substring(1);
+
+        if (startRow != endRow && !startCol.equals(endCol)) {
+            System.out.println("Error! Coordinates are not on the same line!");
+            return null;
+        }
+
+        return new String[]{
+                String.valueOf(coordinates[0].charAt(0)),
+                coordinates[0].substring(1),
+                String.valueOf(coordinates[1].charAt(0)),
+                coordinates[1].substring(1)
+        };
+    }
+
+    public static void fillBoard() {
+        for (String[] row : board) {
+            Arrays.fill(row, "~");
+        }
+    }
+
+    public static void printBoard() {
+        System.out.println("  " + String.join(" ", Main.COLS));
+        for (int i = 0; i < Main.SIZE; i++) {
+            System.out.println(Main.ROWS[i] + " " + String.join(" ", board[i]));
+        }
+    }
 }
