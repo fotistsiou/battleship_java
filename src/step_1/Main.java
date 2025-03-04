@@ -53,19 +53,33 @@ public class Main {
         }
 
         int lenght = 1;
-        if (!coords[0].equals(coords[2])) {
-            lenght += Math.abs(coords[0].charAt(0) - coords[2].charAt(0));
+        if (coords[0].equals(coords[2])) {
+            lenght += Math.abs(Integer.parseInt(coords[1]) - Integer.parseInt(coords[3]));
+            int index = Arrays.asList(COLS).indexOf(coords[1]);
             System.out.println("Length: " + lenght);
             System.out.print("Parts: ");
-            for (int i = 0; i < lenght; i++) {
-                System.out.print(ROWS[i] + coords[1] + " ");
+            if (Integer.parseInt(coords[1]) < Integer.parseInt(coords[3])) {
+                for (int i = index; i < lenght + index; i++) {
+                    System.out.print(coords[0] + COLS[i] + " ");
+                }
+            } else {
+                for (int i = index; i >= lenght - index - 1; i--) {
+                    System.out.print(coords[0] + COLS[i] + " ");
+                }
             }
         } else {
-            lenght += Math.abs(Integer.parseInt(coords[1]) - Integer.parseInt(coords[3]));
+            lenght += Math.abs(coords[0].charAt(0) - coords[2].charAt(0));
+            int index = Arrays.asList(ROWS).indexOf(coords[0]);
             System.out.println("Length: " + lenght);
             System.out.print("Parts: ");
-            for (int i = 0; i < lenght; i++) {
-                System.out.print(coords[0] + COLS[i] + " ");
+            if (coords[0].charAt(0) < coords[2].charAt(0)) {
+                for (int i = index; i < lenght + index; i++) {
+                    System.out.print(ROWS[i] + coords[1] + " ");
+                }
+            } else {
+                for (int i = index; i >= lenght - index - 1; i--) {
+                    System.out.print(ROWS[i] + coords[1] + " ");
+                }
             }
         }
     }
