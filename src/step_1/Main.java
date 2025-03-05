@@ -1,5 +1,8 @@
 package step_1;
 
+import java.util.Arrays;
+import java.util.Scanner;
+
 /**
  * Create the field
  * ----------------
@@ -32,9 +35,6 @@ package step_1;
  *    should report it. The message should contain the word Error.
  */
 
-import java.util.Arrays;
-import java.util.Scanner;
-
 public class Main {
     public static Scanner scanner = new Scanner(System.in);
     public static final int SIZE = 10;
@@ -52,47 +52,44 @@ public class Main {
             return;
         }
 
-        int lenght = 1;
         if (coords[0].equals(coords[2])) {
-            lenght += Math.abs(Integer.parseInt(coords[1]) - Integer.parseInt(coords[3]));
-            int index = Arrays.asList(COLS).indexOf(coords[1]);
-            System.out.println("Length: " + lenght);
+            int length = Math.abs(Integer.parseInt(coords[1]) - Integer.parseInt(coords[3])) + 1;
+            int startIndex = Arrays.asList(COLS).indexOf(coords[1]);
+            System.out.println("Length: " + length);
             System.out.print("Parts: ");
             if (Integer.parseInt(coords[1]) < Integer.parseInt(coords[3])) {
-                for (int i = index; i < lenght + index; i++) {
-                    System.out.print(coords[0] + COLS[i] + " ");
+                int upperBound = length + startIndex;
+                while (startIndex < upperBound) {
+                    System.out.print(coords[0] + COLS[startIndex] + " ");
+                    startIndex++;
                 }
             } else {
-                // TODO: Wrong
-                if (Arrays.asList(ROWS).indexOf(coords[3]) == 0) {
-                    for (int i = index; i >= lenght - index - 1; i--) {
-                        System.out.print(coords[0] + COLS[i] + " ");
-                    }
-                } else {
-                    for (int i = index; i >= lenght - index + 1; i--) {
-                        System.out.print(coords[0] + COLS[i] + " ");
-                    }
+                int counter = 0;
+                while (counter < length) {
+                    System.out.print(coords[0] + COLS[startIndex] + " ");
+                    counter++;
+                    startIndex--;
                 }
             }
-        } else {
-            lenght += Math.abs(coords[0].charAt(0) - coords[2].charAt(0));
-            int index = Arrays.asList(ROWS).indexOf(coords[0]);
-            System.out.println("Length: " + lenght);
+        }
+
+        if (coords[1].equals(coords[3])) {
+            int length = Math.abs(coords[0].charAt(0) - coords[2].charAt(0)) + 1;
+            int startIndex = Arrays.asList(ROWS).indexOf(coords[0]);
+            System.out.println("Length: " + length);
             System.out.print("Parts: ");
             if (coords[0].charAt(0) < coords[2].charAt(0)) {
-                for (int i = index; i < lenght + index; i++) {
-                    System.out.print(ROWS[i] + coords[1] + " ");
+                int upperBound = length + startIndex;
+                while (startIndex < upperBound) {
+                    System.out.print(ROWS[startIndex] + coords[1] + " ");
+                    startIndex++;
                 }
             } else {
-                // TODO: Wrong
-                if (Arrays.asList(ROWS).indexOf(coords[2]) == 0) {
-                    for (int i = index; i >= lenght - index - 1; i--) {
-                        System.out.print(ROWS[i] + coords[1] + " ");
-                    }
-                } else {
-                    for (int i = index; i >= lenght - index + 1; i--) {
-                        System.out.print(ROWS[i] + coords[1] + " ");
-                    }
+                int counter = 0;
+                while (counter < length) {
+                    System.out.print(ROWS[startIndex] + coords[1] + " ");
+                    counter++;
+                    startIndex--;
                 }
             }
         }
@@ -101,9 +98,9 @@ public class Main {
     public static String[] getCoordinates() {
         System.out.println("Enter the coordinates of the ship:");
         String[] coordinates = Arrays
-                .stream(Main.scanner.nextLine().split(" "))
-                .filter(s -> s.matches("^[A-J](10|[1-9])$"))
-                .toArray(String[]::new);
+            .stream(Main.scanner.nextLine().split(" "))
+            .filter(s -> s.matches("^[A-J](10|[1-9])$"))
+            .toArray(String[]::new);
 
         if (coordinates.length != 2) {
             System.out.println("Error! Coordinates out of bounds!");
@@ -111,20 +108,20 @@ public class Main {
         }
 
         char startRow = coordinates[0].charAt(0);
-        String startCol = coordinates[1].substring(1);
+        String startCol = coordinates[0].substring(1);
         char endRow = coordinates[1].charAt(0);
         String endCol = coordinates[1].substring(1);
 
-        if (startRow != endRow && !startCol.equals(endCol)) {
+        if (startRow != endRow && Integer.parseInt(startCol) != Integer.parseInt(endCol)) {
             System.out.println("Error! Coordinates are not on the same line!");
             return null;
         }
 
         return new String[]{
-                String.valueOf(coordinates[0].charAt(0)),
-                coordinates[0].substring(1),
-                String.valueOf(coordinates[1].charAt(0)),
-                coordinates[1].substring(1)
+            String.valueOf(startRow),
+            startCol,
+            String.valueOf(endRow),
+            endCol
         };
     }
 
