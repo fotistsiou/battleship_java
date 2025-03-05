@@ -36,7 +36,6 @@ import java.util.Scanner;
  */
 
 public class Main {
-    public static Scanner scanner = new Scanner(System.in);
     public static final int SIZE = 10;
     public static final String[] ROWS = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
     public static final String[] COLS = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
@@ -45,13 +44,12 @@ public class Main {
     public static void main(String[] args) {
         Main.fillBoard();
         Main.printBoard();
-
         String[] coords = Main.getCoordinates();
+        if (coords == null) return;
+        Main.printShipDetails(coords);
+    }
 
-        if (coords == null) {
-            return;
-        }
-
+    public static void printShipDetails(String[] coords) {
         if (coords[0].equals(coords[2])) {
             int length = Math.abs(Integer.parseInt(coords[1]) - Integer.parseInt(coords[3])) + 1;
             int startIndex = Arrays.asList(COLS).indexOf(coords[1]);
@@ -96,33 +94,32 @@ public class Main {
     }
 
     public static String[] getCoordinates() {
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the coordinates of the ship:");
         String[] coordinates = Arrays
-            .stream(Main.scanner.nextLine().split(" "))
+            .stream(scanner.nextLine().split(" "))
             .filter(s -> s.matches("^[A-J](10|[1-9])$"))
             .toArray(String[]::new);
 
         if (coordinates.length != 2) {
             System.out.println("Error! Coordinates out of bounds!");
+            scanner.close();
             return null;
         }
 
-        char startRow = coordinates[0].charAt(0);
+        String startRow = coordinates[0].substring(0, 1);
         String startCol = coordinates[0].substring(1);
-        char endRow = coordinates[1].charAt(0);
+        String endRow = coordinates[1].substring(0, 1);
         String endCol = coordinates[1].substring(1);
 
-        if (startRow != endRow && Integer.parseInt(startCol) != Integer.parseInt(endCol)) {
+        if (!startRow.equals(endRow) && !startCol.equals(endCol)) {
             System.out.println("Error! Coordinates are not on the same line!");
+            scanner.close();
             return null;
         }
 
-        return new String[]{
-            String.valueOf(startRow),
-            startCol,
-            String.valueOf(endRow),
-            endCol
-        };
+        scanner.close();
+        return new String[]{startRow, startCol, endRow, endCol};
     }
 
     public static void fillBoard() {
