@@ -70,13 +70,16 @@ public class Main {
                 shipLength
         );
 
-        String[] coords;
-        do {
-            String input = scanner.nextLine();
-            coords = Main.getCoordinates(input, shipLength);
-        } while(coords == null);
+        while (true) {
+            String[] coords;
+            do {
+                String input = scanner.nextLine();
+                coords = Main.getCoordinates(input, shipLength);
+            } while(coords == null);
 
-        Main.updateBoard(coords);
+            boolean isUpdateBoard = Main.updateBoard(coords);
+            if (isUpdateBoard) return;
+        }
     }
 
     public static String[] getCoordinates(String input, int shipLength) {
@@ -85,6 +88,7 @@ public class Main {
                 .filter(s -> s.matches("^[A-J](10|[1-9])$"))
                 .toArray(String[]::new);
 
+        // 1st Check: Coordinate Bounds
         if (coordinates.length != 2) {
             System.out.println("Error! Wrong coordinate bounds! Try again:");
             return null;
@@ -95,41 +99,138 @@ public class Main {
         String endRow = coordinates[1].substring(0, 1);
         String endCol = coordinates[1].substring(1);
 
+        // 2nd Check: Ship Location
         if (!startRow.equals(endRow) && !startCol.equals(endCol)) {
             System.out.println("Error! Wrong ship location! Try again:");
             return null;
         }
 
+        // 3rd Check: Ship Length
         int length;
         if (startRow.equals(endRow)) {
             length = Math.abs(Integer.parseInt(startCol) - Integer.parseInt(endCol)) + 1;
         } else {
             length = Math.abs(startRow.charAt(0) - endRow.charAt(0)) + 1;
         }
-
         if (length != shipLength) {
-            System.out.println("Error! Wrong length of the ship! Try again:");
+            System.out.println("Error! Wrong ship length! Try again:");
             return null;
         }
 
         return new String[]{startRow, startCol, endRow, endCol};
     }
 
-    public static void updateBoard(String[] coords) {
-        if (coords[0].equals(coords[2])) {
+    public static boolean updateBoard(String[] coords) {
+        if (coords[0].equals(coords[2])) { // If the ship is placed horizontally
             int length = Math.abs(Integer.parseInt(coords[1]) - Integer.parseInt(coords[3])) + 1;
             int startIndex = Math.min(Arrays.asList(COLS).indexOf(coords[1]) , Arrays.asList(COLS).indexOf(coords[3]));
             for (int i = startIndex; i < length + startIndex; i++) {
+                // 4th Check: Ship Neighbors
+                boolean existWrong = false;
+                if (Arrays.asList(ROWS).indexOf(coords[0]) == 0) { // If coords[0] = A
+                    if (
+                            Main.board[Arrays.asList(ROWS).indexOf(coords[0]) + 1][i].equals("O")
+                                    || (i == (length + startIndex - 1) && Main.board[Arrays.asList(ROWS).indexOf(coords[0])][i + 1].equals("O"))
+                    ) {
+                        existWrong = true;
+                    }
+                } else if (Arrays.asList(ROWS).indexOf(coords[0]) == 9) { // If coords[0] = J
+                    if (
+                            Main.board[Arrays.asList(ROWS).indexOf(coords[0]) - 1][i].equals("O")
+                                    || (i == startIndex && Main.board[Arrays.asList(ROWS).indexOf(coords[0])][i - 1].equals("O"))
+                    ) {
+                        existWrong = true;
+                    }
+                } else if (startIndex == 0) { // If coords[1] = 1 || coords[3] = 1
+                    if (
+                            Main.board[Arrays.asList(ROWS).indexOf(coords[0]) - 1][i].equals("O")
+                                    || Main.board[Arrays.asList(ROWS).indexOf(coords[0]) + 1][i].equals("O")
+                                    || (i == (length + startIndex - 1) && Main.board[Arrays.asList(ROWS).indexOf(coords[0])][i + 1].equals("O"))
+                    ) {
+                        existWrong = true;
+                    }
+                } else if (length + startIndex - 1 == 9) { // If coords[1] = 10 || coords[3] = 10
+                    if (
+                            Main.board[Arrays.asList(ROWS).indexOf(coords[0]) - 1][i].equals("O")
+                                    || Main.board[Arrays.asList(ROWS).indexOf(coords[0]) + 1][i].equals("O")
+                                    || (i == startIndex && Main.board[Arrays.asList(ROWS).indexOf(coords[0])][i - 1].equals("O"))
+                    ) {
+                        existWrong = true;
+                    }
+                } else {
+                    if (
+                            Main.board[Arrays.asList(ROWS).indexOf(coords[0]) - 1][i].equals("O")
+                                    || Main.board[Arrays.asList(ROWS).indexOf(coords[0]) + 1][i].equals("O")
+                                    || (i == startIndex && Main.board[Arrays.asList(ROWS).indexOf(coords[0])][i - 1].equals("O"))
+                                    || (i == (length + startIndex - 1) && Main.board[Arrays.asList(ROWS).indexOf(coords[0])][i + 1].equals("O"))
+                    ) {
+                        existWrong = true;
+                    }
+                }
+                if (existWrong) {
+                    System.out.println("Error! Wrong ship placement! Try again:");
+                    return false;
+                }
+
                 Main.board[Arrays.asList(ROWS).indexOf(coords[0])][i] = "O";
             }
         }
 
-        if (coords[1].equals(coords[3])) {
+        if (coords[1].equals(coords[3])) { // If ship placed vertically
             int length = Math.abs(coords[0].charAt(0) - coords[2].charAt(0)) + 1;
             int startIndex = Math.min(Arrays.asList(ROWS).indexOf(coords[0]) , Arrays.asList(ROWS).indexOf(coords[2]));
             for (int i = startIndex; i < length + startIndex; i++) {
+                // 4th Check: Ship Neighbors
+                boolean existWrong = false;
+                if (Arrays.asList(COLS).indexOf(coords[1]) == 0) { // If coords[1] = 1
+                    if (
+                            Main.board[i][Arrays.asList(COLS).indexOf(coords[1]) + 1].equals("O")
+                                    || (i == (length + startIndex - 1) && Main.board[i + 1][Arrays.asList(COLS).indexOf(coords[1])].equals("O"))
+                    ) {
+                        existWrong = true;
+                    }
+                } else if (Arrays.asList(COLS).indexOf(coords[1]) == 9) { // If coords[1] = 10
+                    if (
+                            Main.board[i][Arrays.asList(COLS).indexOf(coords[1]) - 1].equals("O")
+                                    || (i == startIndex && Main.board[i - 1][Arrays.asList(COLS).indexOf(coords[1])].equals("O"))
+                    ) {
+                        existWrong = true;
+                    }
+                } else if (startIndex == 0) { // If coords[0] = A || coords[2] = A
+                    if (
+                            Main.board[i][Arrays.asList(COLS).indexOf(coords[1]) - 1].equals("O")
+                                    || Main.board[i][Arrays.asList(COLS).indexOf(coords[1]) + 1].equals("O")
+                                    || (i == (length + startIndex - 1) && Main.board[i + 1][Arrays.asList(COLS).indexOf(coords[1])].equals("O"))
+                    ) {
+                        existWrong = true;
+                    }
+                } else if (length + startIndex - 1 == 9) { // If coords[0] = J || coords[2] = J
+                    if (
+                            Main.board[i][Arrays.asList(COLS).indexOf(coords[1]) - 1].equals("O")
+                                    || Main.board[i][Arrays.asList(COLS).indexOf(coords[1]) + 1].equals("O")
+                                    || (i == startIndex && Main.board[i - 1][Arrays.asList(COLS).indexOf(coords[1])].equals("O"))
+                    ) {
+                        existWrong = true;
+                    }
+                } else {
+                    if (
+                            Main.board[i][Arrays.asList(COLS).indexOf(coords[1]) - 1].equals("O")
+                                    || Main.board[i][Arrays.asList(COLS).indexOf(coords[1]) + 1].equals("O")
+                                    || (i == startIndex && Main.board[i - 1][Arrays.asList(COLS).indexOf(coords[1])].equals("O"))
+                                    || (i == (length + startIndex - 1) && Main.board[i + 1][Arrays.asList(COLS).indexOf(coords[1])].equals("O"))
+                    ) {
+                        existWrong = true;
+                    }
+                }
+                if (existWrong) {
+                    System.out.println("Error! Wrong ship placement! Try again:");
+                    return false;
+                }
+
                 Main.board[i][Arrays.asList(COLS).indexOf(coords[1])] = "O";
             }
         }
+
+        return true;
     }
 }
