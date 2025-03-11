@@ -123,46 +123,46 @@ public class Main {
     public static boolean updateBoard(String[] coords) {
         if (coords[0].equals(coords[2])) { // If the ship is placed horizontally
             int length = Math.abs(Integer.parseInt(coords[1]) - Integer.parseInt(coords[3])) + 1;
-            int startIndex = Math.min(Arrays.asList(COLS).indexOf(coords[1]) , Arrays.asList(COLS).indexOf(coords[3]));
+            int startIndex = Math.min(Arrays.asList(Main.COLS).indexOf(coords[1]) , Arrays.asList(Main.COLS).indexOf(coords[3]));
             for (int i = startIndex; i < length + startIndex; i++) {
                 // 4th Check: Ship Neighbors
                 boolean existWrong = false;
-                if (Arrays.asList(ROWS).indexOf(coords[0]) == 0) { // If coords[0] = A
+                if (Arrays.asList(Main.ROWS).indexOf(coords[0]) == 0) { // If coords[0] = A
                     if (
-                        Main.board[Arrays.asList(ROWS).indexOf(coords[0]) + 1][i].equals("O")
-                        || (i == (length + startIndex - 1) && Main.board[Arrays.asList(ROWS).indexOf(coords[0])][i + 1].equals("O"))
+                        Main.board[Arrays.asList(Main.ROWS).indexOf(coords[0]) + 1][i].equals("O")
+                        || (i == (length + startIndex - 1) && Main.board[Arrays.asList(Main.ROWS).indexOf(coords[0])][i + 1].equals("O"))
                     ) {
                         existWrong = true;
                     }
-                } else if (Arrays.asList(ROWS).indexOf(coords[0]) == 9) { // If coords[0] = J
+                } else if (Arrays.asList(Main.ROWS).indexOf(coords[0]) == 9) { // If coords[0] = J
                     if (
-                        Main.board[Arrays.asList(ROWS).indexOf(coords[0]) - 1][i].equals("O")
-                        || (i == startIndex && Main.board[Arrays.asList(ROWS).indexOf(coords[0])][i - 1].equals("O"))
+                        Main.board[Arrays.asList(Main.ROWS).indexOf(coords[0]) - 1][i].equals("O")
+                        || (i == startIndex && Main.board[Arrays.asList(Main.ROWS).indexOf(coords[0])][i - 1].equals("O"))
                     ) {
                         existWrong = true;
                     }
                 } else if (startIndex == 0) { // If coords[1] = 1 || coords[3] = 1
                     if (
-                        Main.board[Arrays.asList(ROWS).indexOf(coords[0]) - 1][i].equals("O")
-                        || Main.board[Arrays.asList(ROWS).indexOf(coords[0]) + 1][i].equals("O")
-                        || (i == (length + startIndex - 1) && Main.board[Arrays.asList(ROWS).indexOf(coords[0])][i + 1].equals("O"))
+                        Main.board[Arrays.asList(Main.ROWS).indexOf(coords[0]) - 1][i].equals("O")
+                        || Main.board[Arrays.asList(Main.ROWS).indexOf(coords[0]) + 1][i].equals("O")
+                        || (i == (length + startIndex - 1) && Main.board[Arrays.asList(Main.ROWS).indexOf(coords[0])][i + 1].equals("O"))
                     ) {
                         existWrong = true;
                     }
                 } else if (length + startIndex - 1 == 9) { // If coords[1] = 10 || coords[3] = 10
                     if (
-                        Main.board[Arrays.asList(ROWS).indexOf(coords[0]) - 1][i].equals("O")
-                        || Main.board[Arrays.asList(ROWS).indexOf(coords[0]) + 1][i].equals("O")
-                        || (i == startIndex && Main.board[Arrays.asList(ROWS).indexOf(coords[0])][i - 1].equals("O"))
+                        Main.board[Arrays.asList(Main.ROWS).indexOf(coords[0]) - 1][i].equals("O")
+                        || Main.board[Arrays.asList(Main.ROWS).indexOf(coords[0]) + 1][i].equals("O")
+                        || (i == startIndex && Main.board[Arrays.asList(Main.ROWS).indexOf(coords[0])][i - 1].equals("O"))
                     ) {
                         existWrong = true;
                     }
                 } else {
                     if (
-                        Main.board[Arrays.asList(ROWS).indexOf(coords[0]) - 1][i].equals("O")
-                        || Main.board[Arrays.asList(ROWS).indexOf(coords[0]) + 1][i].equals("O")
-                        || (i == startIndex && Main.board[Arrays.asList(ROWS).indexOf(coords[0])][i - 1].equals("O"))
-                        || (i == (length + startIndex - 1) && Main.board[Arrays.asList(ROWS).indexOf(coords[0])][i + 1].equals("O"))
+                        Main.board[Arrays.asList(Main.ROWS).indexOf(coords[0]) - 1][i].equals("O")
+                        || Main.board[Arrays.asList(Main.ROWS).indexOf(coords[0]) + 1][i].equals("O")
+                        || (i == startIndex && Main.board[Arrays.asList(Main.ROWS).indexOf(coords[0])][i - 1].equals("O"))
+                        || (i == (length + startIndex - 1) && Main.board[Arrays.asList(Main.ROWS).indexOf(coords[0])][i + 1].equals("O"))
                     ) {
                         existWrong = true;
                     }
@@ -172,52 +172,52 @@ public class Main {
                     return false;
                 }
 
-                Main.board[Arrays.asList(ROWS).indexOf(coords[0])][i] = "O";
+                Main.board[Arrays.asList(Main.ROWS).indexOf(coords[0])][i] = "O";
             }
         }
 
         if (coords[1].equals(coords[3])) { // If ship placed vertically
             int length = Math.abs(coords[0].charAt(0) - coords[2].charAt(0)) + 1;
-            int startIndex = Math.min(Arrays.asList(ROWS).indexOf(coords[0]) , Arrays.asList(ROWS).indexOf(coords[2]));
+            int startIndex = Math.min(Arrays.asList(Main.ROWS).indexOf(coords[0]) , Arrays.asList(Main.ROWS).indexOf(coords[2]));
             for (int i = startIndex; i < length + startIndex; i++) {
                 // 4th Check: Ship Neighbors
                 boolean existWrong = false;
-                if (Arrays.asList(COLS).indexOf(coords[1]) == 0) { // If coords[1] = 1
+                if (Arrays.asList(Main.COLS).indexOf(coords[1]) == 0) { // If coords[1] = 1
                     if (
-                        Main.board[i][Arrays.asList(COLS).indexOf(coords[1]) + 1].equals("O")
-                        || (i == (length + startIndex - 1) && Main.board[i + 1][Arrays.asList(COLS).indexOf(coords[1])].equals("O"))
+                        Main.board[i][Arrays.asList(Main.COLS).indexOf(coords[1]) + 1].equals("O")
+                        || (i == (length + startIndex - 1) && Main.board[i + 1][Arrays.asList(Main.COLS).indexOf(coords[1])].equals("O"))
                     ) {
                         existWrong = true;
                     }
-                } else if (Arrays.asList(COLS).indexOf(coords[1]) == 9) { // If coords[1] = 10
+                } else if (Arrays.asList(Main.COLS).indexOf(coords[1]) == 9) { // If coords[1] = 10
                     if (
-                        Main.board[i][Arrays.asList(COLS).indexOf(coords[1]) - 1].equals("O")
-                        || (i == startIndex && Main.board[i - 1][Arrays.asList(COLS).indexOf(coords[1])].equals("O"))
+                        Main.board[i][Arrays.asList(Main.COLS).indexOf(coords[1]) - 1].equals("O")
+                        || (i == startIndex && Main.board[i - 1][Arrays.asList(Main.COLS).indexOf(coords[1])].equals("O"))
                     ) {
                         existWrong = true;
                     }
                 } else if (startIndex == 0) { // If coords[0] = A || coords[2] = A
                     if (
-                        Main.board[i][Arrays.asList(COLS).indexOf(coords[1]) - 1].equals("O")
-                        || Main.board[i][Arrays.asList(COLS).indexOf(coords[1]) + 1].equals("O")
-                        || (i == (length + startIndex - 1) && Main.board[i + 1][Arrays.asList(COLS).indexOf(coords[1])].equals("O"))
+                        Main.board[i][Arrays.asList(Main.COLS).indexOf(coords[1]) - 1].equals("O")
+                        || Main.board[i][Arrays.asList(Main.COLS).indexOf(coords[1]) + 1].equals("O")
+                        || (i == (length + startIndex - 1) && Main.board[i + 1][Arrays.asList(Main.COLS).indexOf(coords[1])].equals("O"))
                     ) {
                         existWrong = true;
                     }
                 } else if (length + startIndex - 1 == 9) { // If coords[0] = J || coords[2] = J
                     if (
-                        Main.board[i][Arrays.asList(COLS).indexOf(coords[1]) - 1].equals("O")
-                        || Main.board[i][Arrays.asList(COLS).indexOf(coords[1]) + 1].equals("O")
-                        || (i == startIndex && Main.board[i - 1][Arrays.asList(COLS).indexOf(coords[1])].equals("O"))
+                        Main.board[i][Arrays.asList(Main.COLS).indexOf(coords[1]) - 1].equals("O")
+                        || Main.board[i][Arrays.asList(Main.COLS).indexOf(coords[1]) + 1].equals("O")
+                        || (i == startIndex && Main.board[i - 1][Arrays.asList(Main.COLS).indexOf(coords[1])].equals("O"))
                     ) {
                         existWrong = true;
                     }
                 } else {
                     if (
-                        Main.board[i][Arrays.asList(COLS).indexOf(coords[1]) - 1].equals("O")
-                        || Main.board[i][Arrays.asList(COLS).indexOf(coords[1]) + 1].equals("O")
-                        || (i == startIndex && Main.board[i - 1][Arrays.asList(COLS).indexOf(coords[1])].equals("O"))
-                        || (i == (length + startIndex - 1) && Main.board[i + 1][Arrays.asList(COLS).indexOf(coords[1])].equals("O"))
+                        Main.board[i][Arrays.asList(Main.COLS).indexOf(coords[1]) - 1].equals("O")
+                        || Main.board[i][Arrays.asList(Main.COLS).indexOf(coords[1]) + 1].equals("O")
+                        || (i == startIndex && Main.board[i - 1][Arrays.asList(Main.COLS).indexOf(coords[1])].equals("O"))
+                        || (i == (length + startIndex - 1) && Main.board[i + 1][Arrays.asList(Main.COLS).indexOf(coords[1])].equals("O"))
                     ) {
                         existWrong = true;
                     }
@@ -227,7 +227,7 @@ public class Main {
                     return false;
                 }
 
-                Main.board[i][Arrays.asList(COLS).indexOf(coords[1])] = "O";
+                Main.board[i][Arrays.asList(Main.COLS).indexOf(coords[1])] = "O";
             }
         }
 

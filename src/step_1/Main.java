@@ -52,19 +52,19 @@ public class Main {
     public static void printShipDetails(String[] coords) {
         if (coords[0].equals(coords[2])) {
             int length = Math.abs(Integer.parseInt(coords[1]) - Integer.parseInt(coords[3])) + 1;
-            int startIndex = Arrays.asList(COLS).indexOf(coords[1]);
+            int startIndex = Arrays.asList(Main.COLS).indexOf(coords[1]);
             System.out.println("Length: " + length);
             System.out.print("Parts: ");
             if (Integer.parseInt(coords[1]) < Integer.parseInt(coords[3])) {
                 int upperBound = length + startIndex;
                 while (startIndex < upperBound) {
-                    System.out.print(coords[0] + COLS[startIndex] + " ");
+                    System.out.print(coords[0] + Main.COLS[startIndex] + " ");
                     startIndex++;
                 }
             } else {
                 int counter = 0;
                 while (counter < length) {
-                    System.out.print(coords[0] + COLS[startIndex] + " ");
+                    System.out.print(coords[0] + Main.COLS[startIndex] + " ");
                     counter++;
                     startIndex--;
                 }
@@ -73,19 +73,19 @@ public class Main {
 
         if (coords[1].equals(coords[3])) {
             int length = Math.abs(coords[0].charAt(0) - coords[2].charAt(0)) + 1;
-            int startIndex = Arrays.asList(ROWS).indexOf(coords[0]);
+            int startIndex = Arrays.asList(Main.ROWS).indexOf(coords[0]);
             System.out.println("Length: " + length);
             System.out.print("Parts: ");
             if (coords[0].charAt(0) < coords[2].charAt(0)) {
                 int upperBound = length + startIndex;
                 while (startIndex < upperBound) {
-                    System.out.print(ROWS[startIndex] + coords[1] + " ");
+                    System.out.print(Main.ROWS[startIndex] + coords[1] + " ");
                     startIndex++;
                 }
             } else {
                 int counter = 0;
                 while (counter < length) {
-                    System.out.print(ROWS[startIndex] + coords[1] + " ");
+                    System.out.print(Main.ROWS[startIndex] + coords[1] + " ");
                     counter++;
                     startIndex--;
                 }
