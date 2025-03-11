@@ -51,7 +51,7 @@ public class Main {
     }
 
     public static void initBoard() {
-        for (String[] row : board) {
+        for (String[] row : Main.board) {
             Arrays.fill(row, "~");
         }
     }

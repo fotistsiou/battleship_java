@@ -123,7 +123,7 @@ public class Main {
     }
 
     public static void fillBoard() {
-        for (String[] row : board) {
+        for (String[] row : Main.board) {
             Arrays.fill(row, "~");
         }
     }
