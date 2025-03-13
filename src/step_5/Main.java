@@ -50,7 +50,6 @@ public class Main {
         while (Main.counterShots < 17) {
             Main.takeAshot();
         }
-        System.out.println("You sank the last ship. You won. Congratulations!");
 
         Main.scanner.close();
     }
@@ -281,6 +280,7 @@ public class Main {
             Main.printBoard(Main.fogBoard);
             boolean shipSunk = Main.checkIfShotHitShip(row, col);
             String message = shipSunk ? "You sank a ship! Specify a new target:" : "You hit a ship! Try again:";
+            message = (Main.counterShots < 17) ? message : "You sank the last ship. You won. Congratulations!";
             System.out.println(message);
         } else if (boardValue.equals("M")) {
             Main.printBoard(Main.fogBoard);
